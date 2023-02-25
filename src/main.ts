@@ -3,16 +3,19 @@ import { createPinia } from "pinia";
 import "vue-global-api";
 import naive from "naive-ui";
 
+import type Config from "@/types/Config";
+import type Pisdeo_API from "@/types/Api";
+
 import i18n from "./lang/i18n";
 
 import App from "./App.vue";
-
-import "./assets/main.css";
+import component from "./components/NexUI";
 
 class Pisdeo {
     app = createApp(App);
-    constructor() {
-        this.app.use(createPinia()).use(i18n).use(naive);
+    constructor(api: Pisdeo_API) {
+        this.app.use(createPinia()).use(i18n).use(naive).use(component);
+        this.provide("api", api);
     }
 
     mount(el: string | HTMLElement) {
@@ -28,14 +31,24 @@ class Pisdeo {
     }
 }
 
-const config = {
-    init: true,
+const api: Pisdeo_API = {
+    getConfig: (reback: Function) => {
+        reback(config);
+    },
+    setConfig: (newConfig: Config) => {
+        config = newConfig;
+    },
+};
+
+let config: Config = {
+    init: false,
     configVersion: "Manual Build",
     language: "en_us",
     theme: "auto",
     updateCheck: true,
 };
 
-const pisdeo = new Pisdeo();
-pisdeo.provide("config", config);
+config = ""
+
+const pisdeo = new Pisdeo(api);
 pisdeo.mount("#_pisdeo");

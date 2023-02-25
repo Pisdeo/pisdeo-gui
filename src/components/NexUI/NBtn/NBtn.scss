@@ -1,0 +1,31 @@
+.n-btn {
+    height: auto;
+    width: auto;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-block;
+    outline: none;
+    padding: 6px 16px;
+    border: none;
+    background-color: var(--nex-color-fill-first);
+    color: var(--nex-color-font-primary);
+
+    &:hover,
+    &:focus {
+        background-color: var(--nex-color-fill-first-hover);
+    }
+}
+
+.n-navbtn {
+    display: inline-block;
+    width: auto;
+    border-radius: 5px;
+    padding: 6px;
+    transition: 0.5s;
+    cursor: pointer;
+
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.3);
+    }
+}

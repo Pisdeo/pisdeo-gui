@@ -1,0 +1,14 @@
+:root {
+    --nex-color-font-primary: #333333;
+
+    --nex-color-bg: #eeeeee;
+
+    & .nex-dark {
+        --nex-color-font-primary: #ffffff;
+
+        --nex-color-fill-first: #3a3a3a;
+        --nex-color-fill-first-hover: #303030;
+
+        --nex-color-bg: #111111;
+    }
+}

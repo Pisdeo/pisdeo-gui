@@ -34,7 +34,7 @@ import { setLocale, getSystemLocale, inited } from "../lib/config";
 import { Language } from "@vicons/ionicons5";
 
 export default defineComponent({
-    name: "Welcome",
+    name: "WelcomePage",
     emits: ["goStart"],
     components: { Language },
     data() {
@@ -72,30 +72,30 @@ export default defineComponent({
     methods: {
         setLanguage: async function() {
             this.$i18n.locale = this.lang;
-            if (platform === "desktop") {
+            // if (platform === "desktop") {
                 // const setResult = await setLocale(this.lang);
                 // if (setResult == "successful") {
                 //     this.step++;
                 // } else {
                 //     // ElMessage.error(this.$t("welcome.setlocaleerror"));
                 // }
-            } else {
+            // } else {
                 setLocale(this.lang);
                 this.step++;
-            }
+            // }
         },
         complete: async function() {
-            if (platform === "desktop") {
-                const setResult = await inited();
-                if (setResult == "successful") {
-                    this.$emit("goStart");
-                } else {
-                    // ElMessage.error(this.$t("welcome.initerror"));
-                }
-            } else {
+            // if (platform === "desktop") {
+            //     const setResult = await inited();
+            //     if (setResult == "successful") {
+            //         this.$emit("goStart");
+            //     } else {
+            //         // ElMessage.error(this.$t("welcome.initerror"));
+            //     }
+            // } else {
                 inited();
                 this.$emit("goStart");
-            }
+            // }
         },
     },
 });

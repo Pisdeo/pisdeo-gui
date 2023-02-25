@@ -1,14 +1,5 @@
-// import ipc from "./platform/desktop/ipc";
-// import platform from "./platform/platform";
-import { getFile, setFile } from "./platform/web/file";
-
-type Config = {
-    init: Boolean,
-    configVersion: string,
-    language: string,
-    theme: string,
-    updateCheck: string,
-}
+import type Config from "@/types/Config";
+import Api from "./api";
 
 const defaultConfig: Config = {
     init: false,
@@ -21,43 +12,32 @@ const defaultConfig: Config = {
 let userConfig: Config = defaultConfig;
 
 async function getConfig(callback: any) {
-    // if (platform === "desktop") {
-    //     userConfig = await ipc.getConfig();
-    //     callback(userConfig);
-    // } else if (platform === "web") {
-        getFile("config", (result: any) => {
-            if (result == "") {
-                setFile("config", defaultConfig);
-                callback(defaultConfig);
-            } else {
-                userConfig = JSON.parse(result);
-                callback(userConfig);
-            }
-        });
-    // }
+    Api().getConfig((result: any) => {
+        if (result == "") {
+            console.log(1);
+            Api().setConfig(defaultConfig);
+            callback(defaultConfig);
+        } else {
+            console.log(2);
+            userConfig = result;
+            callback(userConfig);
+        }
+    });
 }
 
 async function setLocale(lang: string) {
     let reback;
-    // if (platform === "desktop") {
-    //     reback = await ipc.setLocale(lang);
-    // } else if (platform === "web") {
-        userConfig.language = lang;
-        setFile("config", userConfig);
-    // }
+    userConfig.language = lang;
+    Api().setConfig(userConfig);
     return reback;
 }
 
 async function inited() {
     let reback;
-    // if (platform === "desktop") {
-    //     reback = await ipc.inited();
-    // } else if (platform === "web") {
-        getConfig((result: Config) => {
-            result.init = true;
-            setFile("config", result);
-        });
-    // }
+    getConfig((result: Config) => {
+        result.init = true;
+        Api().setConfig(result);
+    });
     return reback;
 }
 
@@ -66,7 +46,7 @@ async function getSystemLocale() {
     // if (platform === "desktop") {
     //     reback = await ipc.getLocale();
     // } else if (platform === "web") {
-        reback = navigator.language;
+    reback = navigator.language;
     // }
     reback = reback.replace("-", "_").toLowerCase();
     return reback;

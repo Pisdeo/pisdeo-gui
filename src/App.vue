@@ -1,5 +1,5 @@
 <template>
-    <n-config-provider :theme="darkTheme" :theme-overrides="themeOverrides" style="height: 100%;">
+    <n-config-provider :theme="darkTheme" :theme-overrides="themeOverrides" style="height: 100%">
         <KeepAlive>
             <Welcome v-if="page === 'Welcome'" @goStart="page = 'Start'" />
         </KeepAlive>
@@ -72,7 +72,10 @@ import { useI18n } from "vue-i18n";
 import axios from "axios";
 // import project from "./store/project";
 // import Console from "./lib/console";
-// import Config from "@/types/Config";
+import type Config from "@/types/Config";
+
+import { getApi, setApi } from "./lib/api";
+import type Pisdeo_API from "./types/Api";
 
 export default defineComponent({
     data() {
@@ -97,6 +100,9 @@ export default defineComponent({
         this.startIsInit = true;
     },
     setup() {
+        setApi(<Pisdeo_API>inject("api"));
+        console.log(getApi());
+
         const page: Ref<string> = ref("Blank");
         // const console = Console("App");
         // watch(page, () => {
@@ -124,8 +130,6 @@ export default defineComponent({
         //     }
         // });
 
-        const provideConfig = inject("config")
-        console.log(provideConfig)
         const userConfig = ref<Config>(defaultConfig);
         getConfig((config: Config) => {
             userConfig.value = config;
@@ -198,7 +202,7 @@ export default defineComponent({
         //                 createOrLoad.value = "load";
         //                 // WindowOpen.value = true;
         //                 solution.value = allSolution;
-                        
+
         //                 choosedSolution(allSolution[0]);
         //             })
         //             .catch(() => {
@@ -243,7 +247,7 @@ export default defineComponent({
             },
         };
 
-        window.oncontextmenu = function(e) {
+        window.oncontextmenu = function (e) {
             // Disable browser context menu
             e.preventDefault();
         };
@@ -264,7 +268,7 @@ export default defineComponent({
         };
     },
     methods: {
-        pushPage: function(page: string) {
+        pushPage: function (page: string) {
             this.page = page;
         },
         // SettingCommand: function(command: string) {
@@ -295,5 +299,126 @@ export default defineComponent({
     },
 });
 </script>
-<style scoped>
+<style>
+* {
+    font-family: Helvetica;
+    margin: 0;
+    padding: 0;
+    color: #eee;
+    box-sizing: border-box;
+}
+
+html {
+    overflow-y: hidden !important;
+}
+
+body {
+    background-color: var(--nex-color-bg) !important;
+    min-height: 100%;
+}
+
+a {
+    text-decoration: none;
+}
+
+.titleBar {
+    width: 100%;
+    height: 28px;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0 70px;
+    overflow: hidden;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-app-region: drag;
+    zoom: 1;
+    line-height: 22px;
+    display: flex;
+    background-color: rgb(60, 60, 60);
+}
+
+.window-title {
+    color: rgb(204, 204, 204);
+    font-size: 12px;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    zoom: 1;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0px);
+    max-width: calc(100vw - 160px);
+    flex: 0 1 auto;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.console {
+    transition: 0.3s;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    opacity: 1;
+    overflow: hidden;
+    z-index: 2000;
+    backdrop-filter: blur(2px);
+    background-color: rgba(50, 50, 50, 0.7);
+}
+
+*::-webkit-scrollbar,
+*::-webkit-scrollbar-thumb {
+    width: 26px;
+    height: 26px;
+    border-radius: 13px;
+    background-clip: padding-box;
+    border: 10px solid transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+    box-shadow: inset 0 0 0 10px;
+}
+
+*::-webkit-scrollbar-corner {
+    background: unset;
+}
+
+.scroll {
+    color: rgba(0, 0, 0, 0);
+    transition: color 0.3s ease;
+
+    &:hover {
+        color: rgba(0, 0, 0, 0.3);
+    }
+}
+
+input,
+select {
+    &:focus-visible {
+        outline: none;
+    }
+}
+
+.solution-container {
+    .solution-title {
+        font-size: 30px;
+        font-weight: 700;
+    }
+
+    .solution-list {
+        margin-top: 10px;
+
+        .card {
+            background-color: #444;
+            width: 100%;
+            margin: 0 20px 20px 0;
+            display: inline-flex;
+        }
+    }
+}
 </style>

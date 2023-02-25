@@ -1,5 +1,10 @@
 import { createI18n } from "vue-i18n";
 
+type ImportContent = {
+    default: string;
+    [x: string]: any;
+};
+
 /**
  * Load locale messages
  */
@@ -12,8 +17,8 @@ function loadLocaleMessages() {
         if (langMatched && langMatched.length > 1 && matched) {
             const locale = langMatched[1];
             messages[locale] = messages[locale]
-                ? Object.assign(messages[locale], locales[key].default)
-                : locales[key].default;
+                ? Object.assign(messages[locale], (<ImportContent>locales[key]).default)
+                : (<ImportContent>locales[key]).default;
         }
     });
     return messages;

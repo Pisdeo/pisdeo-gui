@@ -1,23 +1,23 @@
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+import { createApp } from "vue";
+import { createPinia } from "pinia";
 import "vue-global-api";
 import naive from "naive-ui";
 
-import App from './App.vue'
+import i18n from "./lang/i18n";
 
-import './assets/main.css'
+import App from "./App.vue";
+
+import "./assets/main.css";
 
 class Pisdeo {
-	app = createApp(App)
-	constructor(){
-		this.app
-			.use(createPinia())
-			.use(naive)
-	}
+    app = createApp(App);
+    constructor() {
+        this.app.use(createPinia()).use(i18n).use(naive);
+    }
 
-	mount (el: string | HTMLElement) {
-		this.app.mount(el)
-	}
+    mount(el: string | HTMLElement) {
+        this.app.mount(el);
+    }
 
     provide(key: string | Symbol, value: any) {
         this.app.provide(key, value);
@@ -28,8 +28,14 @@ class Pisdeo {
     }
 }
 
-const config = {}
+const config = {
+    init: true,
+    configVersion: "Manual Build",
+    language: "en_us",
+    theme: "auto",
+    updateCheck: true,
+};
 
 const pisdeo = new Pisdeo();
-pisdeo.provide("config", config)
-pisdeo.mount("#_pisdeo")
+pisdeo.provide("config", config);
+pisdeo.mount("#_pisdeo");

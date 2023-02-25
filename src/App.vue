@@ -55,7 +55,7 @@
     </n-config-provider>
 </template>
 <script lang="ts">
-import { Ref } from "vue";
+import type { Ref } from "vue";
 import { defaultConfig, getConfig } from "./lib/config";
 // import { ElLoading, ElMessage } from "element-plus";
 import { darkTheme } from "naive-ui";
@@ -82,7 +82,6 @@ export default defineComponent({
             errorCode: "",
             warningShow: false,
             title: "Pisdeo",
-            platform,
             version: "Manual Build",
             isDevelopment: process.env.NODE_ENV === "development" ? true : false,
         };
@@ -254,13 +253,13 @@ export default defineComponent({
             themeOverrides,
             template,
             templateRequires,
-            openLocalProject,
-            loadTestProject,
+            // openLocalProject,
+            // loadTestProject,
             createOrLoad,
             WindowOpen,
             solution,
-            createProject,
-            choosedSolution,
+            // createProject,
+            // choosedSolution,
             page,
         };
     },

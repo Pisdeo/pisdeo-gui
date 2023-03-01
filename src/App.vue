@@ -3,7 +3,7 @@
         <KeepAlive>
             <Welcome v-if="page === 'Welcome'" @goStart="page = 'Start'" />
         </KeepAlive>
-        <!-- <KeepAlive>
+        <KeepAlive>
             <Start
                 v-if="page === 'Start'"
                 :isInit="startIsInit"
@@ -13,7 +13,7 @@
                 @open-local-project="openLocalProject"
             />
         </KeepAlive>
-        <KeepAlive>
+        <!-- <KeepAlive>
             <Setting
                 v-show="page === 'Setting'"
                 @goToStartPage="page = 'Start'"
@@ -59,7 +59,7 @@ import type { Ref } from "vue";
 import { defaultConfig, getConfig } from "./lib/config";
 // import { ElLoading, ElMessage } from "element-plus";
 import { darkTheme } from "naive-ui";
-// import Start from "./views/Start.vue";
+import Start from "./views/Start.vue";
 // import Project from "./views/Project";
 // import Setting from "./views/Setting.vue";
 import Welcome from "./views/Welcome.vue";
@@ -77,6 +77,8 @@ import type Config from "@/types/Config";
 import { getApi, setApi } from "./lib/api";
 import type Pisdeo_API from "./types/Api";
 
+import useConfig from "./stores/config"
+
 export default defineComponent({
     data() {
         return {
@@ -90,7 +92,7 @@ export default defineComponent({
         };
     },
     components: {
-        // Start,
+        Start,
         // Project,
         Welcome,
         // Tool,
@@ -101,7 +103,6 @@ export default defineComponent({
     },
     setup() {
         setApi(<Pisdeo_API>inject("api"));
-        console.log(getApi());
 
         const page: Ref<string> = ref("Blank");
         // const console = Console("App");
@@ -130,18 +131,14 @@ export default defineComponent({
         //     }
         // });
 
-        const userConfig = ref<Config>(defaultConfig);
-        getConfig((config: Config) => {
-            userConfig.value = config;
-            page.value = userConfig.value.init ? "Start" : "Welcome";
-            i18n.locale.value = userConfig.value.language;
-            if (userConfig.value.language.indexOf("zh") == 0) {
-                i18n.fallbackLocale.value = "zh_cn";
-            } else {
-                i18n.fallbackLocale.value = "en_us";
-            }
-        });
-        provide("userConfig", userConfig);
+        const configStore = useConfig();
+        page.value = configStore.init ? "Welcome" : "Start";
+        i18n.locale.value = configStore.config;
+        if (configStore.config.language.indexOf("zh") == 0) {
+            i18n.fallbackLocale.value = "zh_cn";
+        } else {
+            i18n.fallbackLocale.value = "en_us";
+        }
 
         const clientSize: WinSize = reactive({
             width: document.documentElement.clientWidth,

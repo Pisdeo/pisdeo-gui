@@ -1,5 +1,4 @@
 type Config = {
-    init: Boolean,
     configVersion: string,
     language: string,
     theme: string,

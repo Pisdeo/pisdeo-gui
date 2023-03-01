@@ -11,6 +11,13 @@ import i18n from "./lang/i18n";
 import App from "./App.vue";
 import component from "./components/NexUI";
 
+let config: Config = {
+    configVersion: "Manual Build",
+    language: "zh_cn",
+    theme: "auto",
+    updateCheck: true,
+};
+
 class Pisdeo {
     app = createApp(App);
     constructor(api: Pisdeo_API) {
@@ -38,17 +45,13 @@ const api: Pisdeo_API = {
     setConfig: (newConfig: Config) => {
         config = newConfig;
     },
+    getEnvLang: () => {
+        let reback = "en_us";
+        reback = navigator.language;
+        reback = reback.replace("-", "_").toLowerCase();
+        return reback;
+    },
 };
-
-let config: Config = {
-    init: false,
-    configVersion: "Manual Build",
-    language: "en_us",
-    theme: "auto",
-    updateCheck: true,
-};
-
-config = ""
 
 const pisdeo = new Pisdeo(api);
 pisdeo.mount("#_pisdeo");

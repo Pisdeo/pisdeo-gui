@@ -28,9 +28,8 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 // import { ElMessage } from "element-plus";
-import { setLocale, getSystemLocale, inited } from "../lib/config";
+import { setLang, getEnvLang } from "../lib/config";
 // import Legal from "../components/legal.vue";
-// import platform from "../lib/platform/platform";
 import { Language } from "@vicons/ionicons5";
 
 export default defineComponent({
@@ -45,7 +44,7 @@ export default defineComponent({
         };
     },
     created: async function() {
-        const systenLang = await getSystemLocale();
+        const systenLang = getEnvLang();
         this.lang = this.$i18n.availableLocales.includes(systenLang) ? systenLang : "en_us";
         this.$i18n.availableLocales.forEach((lang) => {
             this.supportLang.push({
@@ -80,7 +79,7 @@ export default defineComponent({
                 //     // ElMessage.error(this.$t("welcome.setlocaleerror"));
                 // }
             // } else {
-                setLocale(this.lang);
+                setLang(this.lang);
                 this.step++;
             // }
         },

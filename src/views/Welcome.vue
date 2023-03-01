@@ -27,8 +27,9 @@
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
+import { useI18n } from "vue-i18n";
 // import { ElMessage } from "element-plus";
-import { setLang, getEnvLang } from "../lib/config";
+import useConfig from "../stores/config";
 // import Legal from "../components/legal.vue";
 import { Language } from "@vicons/ionicons5";
 
@@ -43,20 +44,26 @@ export default defineComponent({
             supportLang: [] as any,
         };
     },
-    created: async function() {
-        const systenLang = getEnvLang();
-        this.lang = this.$i18n.availableLocales.includes(systenLang) ? systenLang : "en_us";
-        this.$i18n.availableLocales.forEach((lang) => {
-            this.supportLang.push({
+    setup () {
+        const lang = ref("");
+        const supportLang = reactive([]);
+        const configStore = useConfig();
+        const i18n = useI18n();
+        const t = i18n.t;
+        const systenLang = configStore.getEnvLang;
+        lang.value = i18n.availableLocales.includes(systenLang) ? systenLang : "en_us";
+        i18n.availableLocales.forEach((lang) => {
+            supportLang.push({
                 value: lang,
-                label: this.$t(`language.${lang}`),
+                label: t(`language.${lang}`),
             });
         });
-        if (this.lang.indexOf("zh") == 0) {
-            this.$i18n.fallbackLocale = "zh_cn";
+        if (lang.value.indexOf("zh") == 0) {
+            i18n.fallbackLocale = "zh_cn";
         } else {
-            this.$i18n.fallbackLocale = "en_us";
+            i18n.fallbackLocale = "en_us";
         }
+        return {lang,supportLang}
     },
     watch: {
         lang(lang) {

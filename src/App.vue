@@ -56,7 +56,6 @@
 </template>
 <script lang="ts">
 import type { Ref } from "vue";
-import { defaultConfig, getConfig } from "./lib/config";
 // import { ElLoading, ElMessage } from "element-plus";
 import { darkTheme } from "naive-ui";
 import Start from "./views/Start.vue";

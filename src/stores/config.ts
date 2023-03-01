@@ -31,5 +31,9 @@ export default defineStore('config', () => {
         Api().setConfig(config)
     }
 
-    return { config, init, setConfig, setLang }
+    const getEnvLang = computed(() => {
+        return Api().getEnvLang()
+    })
+
+    return { config, init, setConfig, setLang, getEnvLang }
 })
